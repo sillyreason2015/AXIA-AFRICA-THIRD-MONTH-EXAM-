@@ -1,8 +1,7 @@
-// middleware for verifying productId attached to specific user
 const Product = require("../schema/productSchema");
 
 const loadProduct = async (req, res, next) => {
-    const { productId } = req.body;
+    const productId = req.params.id || req.body.productId;
 
     if (!productId) {
         return res.status(400).json({ message: "Product ID is required" });
@@ -14,7 +13,7 @@ const loadProduct = async (req, res, next) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        req.product = product; // Attach product to request
+        req.product = product;
         next();
     } catch (err) {
         return res.status(500).json({ message: "Error loading product" });
